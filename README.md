@@ -1,12 +1,225 @@
-# React + Vite
+# ✅ Checklist 4 Must-Haves Dành Cho Group 7
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 1️⃣ Database Layer — RDS Multi-AZ (Relational Paradigm)
 
-Currently, two official plugins are available:
+**Deploy checklist:**
+- [ ] RDS ở **Database Layer (private subnet)** ✓ (đã có trên diagram)
+- [ ] **Encryption at rest** ON (verify + label trên diagram)
+- [ ] **Multi-AZ Deployment** với synchronous Standby ✓ (diagram đã đúng)
+- [ ] Automated backups 7+ ngày
+- [ ] Ít nhất 1 record write/read qua app/CLI (không chỉ console)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Paradigm-specific (relational):**
+- [ ] Schema có **ít nhất 2 related tables với foreign key**
+- [ ] Demo **1 JOIN query** qua 2 table, trả về rows thật
+- [ ] Demo **1 indexed lookup** (có tên index, support WHERE/JOIN)
 
-## Expanding the ESLint configuration
+**Gợi ý data model cho Group 7:**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Tùy app của nhóm là gì. Ví dụ e-commerce:
+
+| Table | Quan hệ | Indexed fields |
+|-------|---------|----------------|
+| `users` | — | `email` (unique) |
+| `orders` | FK `user_id` → users | `user_id`, `order_date` |
+| `products` | — | `category`, `sku` |
+| `order_items` | FK `order_id` → orders, FK `product_id` → products | `order_id` |
+
+**Example demo queries:**
+
+```sql
+-- 1. JOIN — lấy orders kèm thông tin user
+SELECT o.order_id, o.order_date, u.email, u.name
+FROM orders o
+JOIN users u ON o.user_id = u.user_id
+WHERE o.order_date > '2026-04-01'
+LIMIT 10;
+
+-- 2. Indexed lookup + EXPLAIN
+EXPLAIN SELECT * FROM users WHERE email = 'test@example.com';
+-- → phải show "Index Scan using users_email_idx" (PostgreSQL)
+-- → hoặc "key: idx_email, type: ref" (MySQL)
+```
+
+---
+
+### 2️⃣ Bedrock Knowledge Base — **PHẢI THÊM VÀO DIAGRAM**
+
+- [ ] Thêm **Bedrock Knowledge Base** icon vào diagram (có thể đặt gần S3 Static Assets hoặc Standard-IA)
+- [ ] Connect vào **1 trong 2 S3 bucket W2** (Standard hoặc Standard-IA)
+- [ ] Ingest ≥ 3 documents, sync **Complete**
+- [ ] Embedding model đã chọn: ________________ (gợi ý: Titan Embeddings G1)
+- [ ] Vector store đã chọn: ________________ (gợi ý: **S3 Vectors** — rẻ, phù hợp team có S3 sẵn)
+- [ ] Gọi `Retrieve` hoặc `RetrieveAndGenerate` **từ Lambda/CLI** (không Playground)
+
+**Gợi ý use case RAG cho Group 7:**
+- Customer support chatbot (FAQ, order policies)
+- Product search với natural language
+- Internal help docs cho team dev
+- Document summarization cho user uploads
+
+---
+
+### 3️⃣ Lambda — **PHẢI THÊM** (hiện chưa có trong diagram)
+
+Group 7 chưa có Lambda → **bắt buộc thêm ít nhất 1**.
+
+**Gợi ý design Lambda cho Group 7:**
+
+**Phương án A — Lambda API cho Bedrock RAG** (khuyến nghị, đơn giản)
+- [ ] Tạo Lambda function
+- [ ] Trigger: API Gateway (user gọi REST → Lambda → Bedrock KB)
+- [ ] IAM role least-privilege: `bedrock:Retrieve`, `bedrock:RetrieveAndGenerate` scope đến KB ARN
+- [ ] Demo: call API → show response + CloudWatch log
+
+**Phương án B — Lambda xử lý S3 upload**
+- [ ] Trigger: S3 event (upload file vào 1 bucket)
+- [ ] Xử lý file → ghi metadata vào RDS
+- [ ] Hoặc gọi Bedrock để generate description cho file
+
+**IAM requirements (bắt buộc cho cả 2 phương án):**
+- [ ] **Không có** `Action: "*"`
+- [ ] **Không có** `Resource: "*"` — scope cụ thể ARN
+- [ ] CloudWatch log visible với timestamp
+
+---
+
+### 4️⃣ VPC 3-Tier — **Đã gần đủ, chỉ cần add thêm label chi tiết**
+
+**Đã có (điểm mạnh nổi bật):**
+- [x] **3 tiers label rõ**: Presentation / Application / Database ✅
+- [x] **S3 VPC Endpoint** ✅ (nối từ Application Layer + Database tier)
+- [x] Multi-AZ (ap-southeast-1a/1b)
+- [x] NAT Gateway cả 2 AZ
+- [x] IAM Role cho EC2 (Auto Scaling)
+
+**Cần bổ sung:**
+- [ ] **Type endpoint** — clarify trên diagram: S3 VPC Endpoint đang là **Gateway Endpoint** (hay Interface)?
+  - Nếu đang dùng Gateway → cần show route table entry
+  - Gợi ý: dùng Gateway (miễn phí cho S3)
+- [ ] Verify **RDS Security Group inbound** = **EC2 SG ID** (không dùng CIDR subnet)
+- [ ] Verify **Redis Security Group inbound** = **EC2 SG ID**
+- [ ] Chuẩn bị giải thích: "Khi nào dùng NACL thay vì SG?"
+
+**Tip đặc biệt cho Group 7**: Team đã có Presentation/Application/Database label — **tận dụng điều này trong Part 2 Architecture**. Nói:
+
+> "Chúng em thiết kế theo 3-tier architecture chuẩn: Presentation Layer với CloudFront + ALB, Application Layer với EC2 Auto Scaling, Database Layer với RDS Multi-AZ + Redis. Mỗi tier có SG riêng, traffic chỉ đi từ trên xuống dưới."
+
+---
+
+### 🔧 3 Lỗ Hổng W2 Status Cho Group 7
+
+- [x] **S3 VPC Endpoint** — ✅ ĐÃ CÓ (hơn nhiều nhóm)
+- [ ] **Encryption labels** — cần label rõ trên diagram:
+  - [ ] RDS encryption at rest (KMS managed)
+  - [ ] Redis encryption at rest + in-transit
+  - [ ] EBS volumes (trên EC2 instances)
+  - [ ] S3 Static Assets + S3 Standard-IA
+- [ ] **IAM wildcards** — audit:
+  - [ ] EC2 IAM Role (hiện trên diagram)
+  - [ ] Lambda role (khi tạo)
+
+---
+
+## 📄 Evidence Pack Template Cho Group 7
+
+File: `docs/W3_evidence.md` trong repo
+
+### Section 1 — Cover
+
+```markdown
+# W3 Evidence Pack — Group 7
+
+**Members**: ________________
+**Database path chosen**: RDS (Postgres/MySQL) Multi-AZ / Relational paradigm
+**Cache layer**: ElastiCache Redis (not primary paradigm)
+**Region**: ap-southeast-1 (Singapore)
+**Link W2 evidence**: ________________
+```
+
+### Section 2 — Data Access Pattern Log
+
+**Part A — 3 access patterns thật:**
+
+```markdown
+Ví dụ nếu app là e-commerce:
+1. "User login: lookup user by email" — ~100 calls/min peak
+2. "Get order history of user, sort by date" — ~50 calls/min peak
+3. "List products by category with price filter" — ~300 calls/min peak
+```
+
+**Part B — Engine + mechanism:**
+
+```markdown
+1. Pattern 1 → RDS `users` table, unique index on `email`
+   — PostgreSQL B-tree index, lookup O(log n)
+   — Redis cache: session token cache 15 phút
+
+2. Pattern 2 → RDS `orders` JOIN `users`, compound index `(user_id, order_date DESC)`
+   — Support sort without extra step
+   — Multi-AZ: reads từ primary (không serve reads từ standby)
+
+3. Pattern 3 → RDS `products` table, index on `category`
+   — Filter theo category + range scan on price
+   — Redis cache: top products per category, TTL 5 phút
+```
+
+**Part C — Wrong-paradigm test:**
+
+```markdown
+Pick pattern #2 (order history JOIN with user info):
+Nếu dùng **key-value (DynamoDB)**:
+— Không có JOIN → phải denormalize user name vào mỗi order item
+— Khi user đổi tên → phải update N orders của user đó (expensive, lỗi race condition)
+— Query "orders in date range with user info" → 2 round trip (get orders + batch get users)
+
+→ Relational đúng vì:
+   - ACID transaction cho payment flow (debit + insert order all-or-nothing)
+   - JOIN native → no N+1 problem
+   - Foreign key đảm bảo referential integrity
+```
+
+### Section 3 — Deployment Evidence
+
+- [ ] RDS trong Database Layer private subnet (screenshot console + VPC/Subnet group)
+- [ ] RDS encryption at rest ON (screenshot + note "AWS-managed KMS key")
+- [ ] RDS Multi-AZ ON (screenshot show "Multi-AZ: Yes" + Standby endpoint)
+- [ ] RDS automated backup 7+ days (screenshot backup tab)
+- [ ] Security Groups: RDS SG inbound = EC2 SG ID (screenshot rule)
+- [ ] Redis SG inbound = EC2 SG ID
+- [ ] EC2 IAM Role policy JSON — show không có wildcard
+
+### Section 4 — Working Query Evidence
+
+- [ ] Screenshot psql / MySQL CLI chạy JOIN query, show rows
+- [ ] Screenshot `EXPLAIN` output → show "Index Scan" (không "Seq Scan")
+- [ ] Timestamps visible
+
+### Section 5 — Lambda + Bedrock Evidence
+
+- [ ] Screenshot CloudWatch log của Lambda với timestamp
+- [ ] Screenshot Bedrock response (JSON) từ Lambda hoặc CLI
+- [ ] CLI output: `aws lambda invoke ... && cat response.json`
+
+### Section 6 — VPC + Networking Evidence
+
+- [ ] **Screenshot route table private subnet show S3 Gateway Endpoint entry**
+- [ ] Screenshot VPC Endpoint list show S3 endpoint + type (Gateway)
+- [ ] Screenshot RDS SG inbound rule — source = EC2 SG ID
+- [ ] Screenshot Redis SG inbound rule — source = EC2 SG ID
+
+### Section 7 — Negative Security Test
+
+Ideas cho Group 7:
+- [ ] Kết nối RDS từ internet (public IP laptop) → connection timeout (private subnet)
+- [ ] Kết nối RDS từ EC2 khác không thuộc Application Layer SG → timeout
+- [ ] Lambda không có Bedrock permission → AccessDenied response
+- [ ] Truy cập S3 Static Assets qua public URL không qua CloudFront → 403
+
+### Section 8 — Bonus (Optional)
+
+Group 7 có lợi thế Multi-AZ Deployment → **dễ làm failover drill**:
+- [ ] **RDS Multi-AZ Failover Drill** (+0.5) — Reboot with failover, đo app downtime
+- [ ] **CFN template** (+0.25) — write partial CFN cho RDS hoặc Lambda, pass validate-template
+
+---
