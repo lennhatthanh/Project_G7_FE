@@ -160,7 +160,6 @@ const DatSan = () => {
     };
 
     const handleThanhToan = async () => {
-        debugger;
         let giasan = 0;
         if (giaTriGiam === 0) {
             giasan = tongTienTatCaSan;
