@@ -1,0 +1,196 @@
+.bedrock-chatbot {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    font-family: inherit;
+}
+
+.bedrock-chatbot__launcher {
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    color: #ffffff;
+    background: #0f766e;
+    box-shadow: 0 18px 45px rgba(15, 118, 110, 0.34);
+    cursor: pointer;
+    transition: transform 160ms ease, background 160ms ease;
+}
+
+.bedrock-chatbot__launcher:hover {
+    transform: translateY(-2px);
+    background: #115e59;
+}
+
+.bedrock-chatbot__panel {
+    position: absolute;
+    right: 0;
+    bottom: 72px;
+    width: min(380px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 120px));
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+}
+
+.bedrock-chatbot__header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 14px 12px;
+    color: #ffffff;
+    background: #0f766e;
+}
+
+.bedrock-chatbot__avatar {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.bedrock-chatbot__header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.bedrock-chatbot__header p {
+    margin: 3px 0 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.bedrock-chatbot__icon {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+}
+
+.bedrock-chatbot__messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    padding: 14px;
+    overflow-y: auto;
+    background: #f8fafc;
+}
+
+.bedrock-chatbot__message {
+    max-width: 82%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.bedrock-chatbot__message--assistant {
+    align-self: flex-start;
+    color: #0f172a;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.bedrock-chatbot__message--user {
+    align-self: flex-end;
+    color: #ffffff;
+    background: #2563eb;
+}
+
+.bedrock-chatbot__loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bedrock-chatbot__loading svg {
+    animation: bedrock-chatbot-spin 850ms linear infinite;
+}
+
+.bedrock-chatbot__composer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 12px;
+    border-top: 1px solid rgba(15, 23, 42, 0.1);
+    background: #ffffff;
+}
+
+.bedrock-chatbot__composer textarea {
+    width: 100%;
+    min-height: 44px;
+    max-height: 92px;
+    resize: none;
+    border: 1px solid rgba(15, 23, 42, 0.18);
+    border-radius: 8px;
+    padding: 10px 11px;
+    color: #0f172a;
+    font: inherit;
+    outline: none;
+}
+
+.bedrock-chatbot__composer textarea:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+}
+
+.bedrock-chatbot__composer button {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    background: #0f766e;
+    cursor: pointer;
+}
+
+.bedrock-chatbot__composer button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+@keyframes bedrock-chatbot-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 520px) {
+    .bedrock-chatbot {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .bedrock-chatbot__panel {
+        right: -2px;
+        bottom: 68px;
+        height: min(540px, calc(100vh - 104px));
+    }
+}

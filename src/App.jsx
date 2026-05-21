@@ -5,6 +5,7 @@ import RouterNhanVien from './router/routerNhanVien';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import KhongKiemTra from './kiemtra/KhongKiemTra';
+import BedrockChatbot from './components/BedrockChatbot';
 function App() {
     return (
         <Router>
@@ -108,6 +109,7 @@ function App() {
                         );
                     })}
                 </Routes>
+                <BedrockChatbot />
             </div>
         </Router>
     );
