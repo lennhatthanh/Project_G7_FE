@@ -32,6 +32,7 @@ function TrangChu() {
     const [selectedQuan, setSelectedQuan] = useState(null);
     const navigate = useNavigate();
     const dsmonchoi = useSelector((state) => state.monchoi.monchoi);
+    const monChoiList = Array.isArray(dsmonchoi) ? dsmonchoi : [];
     const dispatch = useDispatch();
     const tp = [
         {
@@ -181,7 +182,7 @@ function TrangChu() {
                         <option value="1" disabled selected>
                             Môn Chơi
                         </option>
-                        {dsmonchoi.map((value, index) => {
+                        {monChoiList.map((value, index) => {
                             return (
                                 <option key={index} className="text-[#266107]" value={value.ten_mon}>
                                     {value.ten_mon}

@@ -44,7 +44,7 @@ const monChoiSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(dataMonChoi.fulfilled, (state, action) => {
-                state.monchoi = action.payload.data;
+                state.monchoi = Array.isArray(action.payload?.data) ? action.payload.data : [];
             })
             .addCase(themMonChoi.fulfilled, (state, action) => {
                 state.monchoi.push(action.payload.data);
