@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dangKyNguoiDung = createAsyncThunk('nguoidung/dangKy', async (payload, { rejectWithValue }) => {
@@ -6,7 +7,7 @@ export const dangKyNguoiDung = createAsyncThunk('nguoidung/dangKy', async (paylo
         const res = await api.post('/auth/dang-ky', payload);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dangNhapNguoiDung = createAsyncThunk('nguoidung/dangNhap', async (payload, { rejectWithValue }) => {
@@ -14,7 +15,7 @@ export const dangNhapNguoiDung = createAsyncThunk('nguoidung/dangNhap', async (p
         const res = await api.post('/auth/dang-nhap', payload);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const capNhatNguoiDung = createAsyncThunk('nguoidung/capNhatNguoiDung', async (payload, { rejectWithValue }) => {
@@ -26,7 +27,7 @@ export const capNhatNguoiDung = createAsyncThunk('nguoidung/capNhatNguoiDung', a
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const LichSuDatSan = createAsyncThunk('nguoidung/LichSuDatSan', async (_, { rejectWithValue }) => {
@@ -38,7 +39,7 @@ export const LichSuDatSan = createAsyncThunk('nguoidung/LichSuDatSan', async (_,
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const doiPassNguoiDung = createAsyncThunk('nguoidung/doiPassNguoiDung', async (payload, { rejectWithValue }) => {
@@ -50,7 +51,7 @@ export const doiPassNguoiDung = createAsyncThunk('nguoidung/doiPassNguoiDung', a
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -63,7 +64,7 @@ export const dangXuatNguoiDung = createAsyncThunk('nguoidung/dangXuatNguoiDung',
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -76,7 +77,7 @@ export const kiemTraNguoiDung = createAsyncThunk('admin/kiemTraNguoiDung', async
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataNguoiDung = createAsyncThunk('admin/dataNguoiDung', async (_, { rejectWithValue }) => {
@@ -88,7 +89,7 @@ export const dataNguoiDung = createAsyncThunk('admin/dataNguoiDung', async (_, {
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 

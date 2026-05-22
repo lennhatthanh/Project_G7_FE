@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dataMonChoi = createAsyncThunk('monchoi/dataMonChoi', async (_, { rejectWithValue }) => {
@@ -6,7 +7,7 @@ export const dataMonChoi = createAsyncThunk('monchoi/dataMonChoi', async (_, { r
         const res = await api.get('/mon-choi/lay-mon-choi');
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themMonChoi = createAsyncThunk('monchoi/themMonChoi', async (payload, { rejectWithValue }) => {
@@ -14,7 +15,7 @@ export const themMonChoi = createAsyncThunk('monchoi/themMonChoi', async (payloa
         const res = await api.post('/mon-choi/them-mon-choi', payload);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -23,7 +24,7 @@ export const capNhatMonChoi = createAsyncThunk('monchoi/capNhatMonChoi', async (
         const res = await api.put('/mon-choi/cap-nhat-mon-choi', payload);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -32,7 +33,7 @@ export const xoaMonChoi = createAsyncThunk('monchoi/xoaMonChoi', async (payload,
         const res = await api.delete(`/mon-choi/xoa-mon-choi/${payload}`);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const monChoiSlice = createSlice({

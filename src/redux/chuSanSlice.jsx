@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import DangNhap from '../page/NguoiDung/DangNhap';
+import { getErrorMessage } from '@/utils/errorMessage';
 import api from '@/utils/http';
 export const dangNhapChuSan = createAsyncThunk('chusan/dangNhap', async (payload) => {
     const res = await api.post('/auth/dang-nhap-chu-san', payload);
@@ -30,7 +30,7 @@ export const capNhatChuSan = createAsyncThunk('chusan/capNhatChuSan', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataChuSan = createAsyncThunk('chusan/dataChuSan', async () => {
@@ -51,7 +51,7 @@ export const kiemTraChuSan = createAsyncThunk('admin/kiemTraChuSan', async (_, {
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -64,10 +64,10 @@ export const dangXuatChuSan = createAsyncThunk('admin/dangXuatChuSan', async (_,
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
-export const dataDatSan = createAsyncThunk('nhanvien/dataDatSan', async () => {
+export const dataDatSan = createAsyncThunk('nhanvien/dataDatSan', async (_, { rejectWithValue }) => {
     try {
         const res = await api.get('/dat-san/lich-su-dat-san-chu-san', {
             headers: {
@@ -76,7 +76,7 @@ export const dataDatSan = createAsyncThunk('nhanvien/dataDatSan', async () => {
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const chuSanSlice = createSlice({

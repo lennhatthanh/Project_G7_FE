@@ -54,7 +54,15 @@ function BedrockChatbot() {
                     'Content-Type': 'application/json',
                     'x-api-key': apiKey
                 },
-                body: JSON.stringify({ query })
+                body: JSON.stringify({
+                message: query,
+                history: messages
+                    .filter((m) => m.role === 'user' || m.role === 'assistant')
+                    .map((m) => ({
+                    role: m.role,
+                    content: m.content
+                    }))
+                })
             });
 
             const data = await response.json().catch(() => ({}));
@@ -67,7 +75,7 @@ function BedrockChatbot() {
                 ...current,
                 {
                     role: 'assistant',
-                    content: data.answer || 'Bedrock da tra ve phan hoi rong.'
+                    content: data.reply || 'Bedrock da tra ve phan hoi rong.'
                 }
             ]);
         } catch (error) {

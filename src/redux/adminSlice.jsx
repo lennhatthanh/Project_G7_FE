@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dangNhapAdmin = createAsyncThunk('admin/dangNhap', async (payload) => {
@@ -14,7 +15,7 @@ export const kiemTraAdmin = createAsyncThunk('admin/kiemTraAdmin', async (payloa
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -27,7 +28,7 @@ export const dangXuatAdmin = createAsyncThunk('admin/dangXuatAdmin', async (payl
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const adminSlice = createSlice({

@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dataSuKien = createAsyncThunk('sukien/dataSuKien', async (_, { rejectWithValue }) => {
@@ -10,7 +11,7 @@ export const dataSuKien = createAsyncThunk('sukien/dataSuKien', async (_, { reje
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataSuKienOpen = createAsyncThunk('sukien/dataSuKienOpen', async (_, { rejectWithValue }) => {
@@ -22,7 +23,7 @@ export const dataSuKienOpen = createAsyncThunk('sukien/dataSuKienOpen', async (_
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themSuKien = createAsyncThunk('sukien/themSuKien', async (payload, { rejectWithValue }) => {
@@ -34,7 +35,7 @@ export const themSuKien = createAsyncThunk('sukien/themSuKien', async (payload, 
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const thamGiaSuKien = createAsyncThunk('sukien/thamGiaSuKien', async (payload, { rejectWithValue }) => {
@@ -46,7 +47,7 @@ export const thamGiaSuKien = createAsyncThunk('sukien/thamGiaSuKien', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -59,7 +60,7 @@ export const capNhatSuKien = createAsyncThunk('sukien/capNhatSuKien', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -72,7 +73,7 @@ export const xoaSuKien = createAsyncThunk('sukien/xoaSuKien', async (payload, { 
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const suKienSlice = createSlice({

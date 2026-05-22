@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dataThongBao = createAsyncThunk('thongbao/dataThongBao', async (_, { rejectWithValue }) => {
@@ -10,7 +11,7 @@ export const dataThongBao = createAsyncThunk('thongbao/dataThongBao', async (_, 
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themThongBao = createAsyncThunk('thongbao/themThongBao', async (payload, { rejectWithValue }) => {
@@ -22,7 +23,7 @@ export const themThongBao = createAsyncThunk('thongbao/themThongBao', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -35,7 +36,7 @@ export const guiThongBao = createAsyncThunk('thongbao/guiThongBao', async (paylo
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -48,7 +49,7 @@ export const capNhatThongBao = createAsyncThunk('thongbao/capNhatThongBao', asyn
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -61,7 +62,7 @@ export const xoaThongBao = createAsyncThunk('thongbao/xoaThongBao', async (paylo
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const thongBaoSlice = createSlice({

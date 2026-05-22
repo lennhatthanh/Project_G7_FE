@@ -1,4 +1,6 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
+import { dangNhapAdmin } from './adminSlice';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const ThanhToan = createAsyncThunk('admin/datSanThanhToan', async (payload, { rejectWithValue }) => {
@@ -12,7 +14,7 @@ export const ThanhToan = createAsyncThunk('admin/datSanThanhToan', async (payloa
         return res.data.checkoutUrl;
     } catch (error) {
         console.error('Lỗi khi gọi API thanh toán:', error);
-        return rejectWithValue(error.response?.data?.message || 'Lỗi không xác định');
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const datSanSlice = createSlice({

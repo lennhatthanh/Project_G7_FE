@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dataViTriSan = createAsyncThunk('vitrisan/dataViTriSan', async (_, { rejectWithValue }) => {
@@ -10,7 +11,7 @@ export const dataViTriSan = createAsyncThunk('vitrisan/dataViTriSan', async (_, 
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themViTriSan = createAsyncThunk('vitrisan/themViTriSan', async (payload, { rejectWithValue }) => {
@@ -22,7 +23,7 @@ export const themViTriSan = createAsyncThunk('vitrisan/themViTriSan', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -31,7 +32,7 @@ export const capNhatViTriSan = createAsyncThunk('vitrisan/capNhatViTriSan', asyn
         const res = await api.put('/vi-tri-san/cap-nhat-vi-tri-san', payload);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -40,7 +41,7 @@ export const xoaViTriSan = createAsyncThunk('vitrisan/xoaViTriSan', async (paylo
         const res = await api.delete(`/vi-tri-san/xoa-vi-tri-san/${payload}`);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataViTriSanNhanVien = createAsyncThunk('vitrisan/dataViTriSanNhanVien', async (_, { rejectWithValue }) => {
@@ -52,7 +53,7 @@ export const dataViTriSanNhanVien = createAsyncThunk('vitrisan/dataViTriSanNhanV
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const viTriSanSlice = createSlice({

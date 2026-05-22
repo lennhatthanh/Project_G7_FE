@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dataMaGiamGia = createAsyncThunk('magiamgia/dataMaGiamGia', async (_, { rejectWithValue }) => {
@@ -10,7 +11,7 @@ export const dataMaGiamGia = createAsyncThunk('magiamgia/dataMaGiamGia', async (
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themMaGiamGia = createAsyncThunk('magiamgia/themMaGiamGia', async (payload, { rejectWithValue }) => {
@@ -22,7 +23,7 @@ export const themMaGiamGia = createAsyncThunk('magiamgia/themMaGiamGia', async (
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const kiemTraMaGiamGia = createAsyncThunk('magiamgia/kiemTraMaGiamGia', async (payload, { rejectWithValue }) => {
@@ -30,7 +31,7 @@ export const kiemTraMaGiamGia = createAsyncThunk('magiamgia/kiemTraMaGiamGia', a
         const res = await api.post('/ma-giam-gia/kiem-tra-ma-giam-gia', payload);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -43,7 +44,7 @@ export const capNhatMaGiamGia = createAsyncThunk('magiamgia/capNMaGiamGia', asyn
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -56,7 +57,7 @@ export const xoaMaGiamGia = createAsyncThunk('magiamgia/xoaMMaGiamGia', async (p
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const maGiamGiaSlice = createSlice({

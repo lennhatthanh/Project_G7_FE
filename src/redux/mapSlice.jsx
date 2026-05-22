@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 export const getDataSan = createAsyncThunk('map/getData', async () => {
@@ -12,7 +13,7 @@ export const dataSanOpen = createAsyncThunk('san/dataSanOpen', async (_, { rejec
         const res = await api.get('/san/lay-tat-ca-open');
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const initState = {

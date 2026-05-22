@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const dataDichVu = createAsyncThunk('dichvu/dataDichVu', async (_, { rejectWithValue }) => {
@@ -10,7 +11,7 @@ export const dataDichVu = createAsyncThunk('dichvu/dataDichVu', async (_, { reje
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -19,7 +20,7 @@ export const dataDichVuOpen = createAsyncThunk('dichvu/dataDichVuOpen', async (_
         const res = await api.get('/dich-vu/lay-tat-ca-open');
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataDichVuOpenId = createAsyncThunk('dichvu/dataDichVuOpenId', async (payload, { rejectWithValue }) => {
@@ -27,7 +28,7 @@ export const dataDichVuOpenId = createAsyncThunk('dichvu/dataDichVuOpenId', asyn
         const res = await api.get(`/dich-vu/lay-tat-ca-by-id/${payload}`);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themDichVu = createAsyncThunk('dichvu/themDichVu', async (payload, { rejectWithValue }) => {
@@ -39,7 +40,7 @@ export const themDichVu = createAsyncThunk('dichvu/themDichVu', async (payload, 
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -52,7 +53,7 @@ export const capNhatDichVu = createAsyncThunk('dichvu/capNhatDichVu', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -65,7 +66,7 @@ export const xoaDichVu = createAsyncThunk('dichvu/xoaDichVu', async (payload, { 
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const DichVuS = createSlice({

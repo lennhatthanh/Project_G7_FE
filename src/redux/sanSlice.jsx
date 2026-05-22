@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 export const dataSan = createAsyncThunk('san/dataSan', async (_, { rejectWithValue }) => {
     try {
@@ -9,7 +10,7 @@ export const dataSan = createAsyncThunk('san/dataSan', async (_, { rejectWithVal
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataSanChuSanOpen = createAsyncThunk('san/dataSanChuSanOpen', async (_, { rejectWithValue }) => {
@@ -21,7 +22,7 @@ export const dataSanChuSanOpen = createAsyncThunk('san/dataSanChuSanOpen', async
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataSanOpen = createAsyncThunk('san/dataSanOpen', async (_, { rejectWithValue }) => {
@@ -29,7 +30,7 @@ export const dataSanOpen = createAsyncThunk('san/dataSanOpen', async (_, { rejec
         const res = await api.get('/san/lay-tat-ca-open');
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -38,7 +39,7 @@ export const dataChiTietSan = createAsyncThunk('san/dataChiTietSan', async (payl
         const res = await api.get(`/san/lay-san-theo-id/${payload}`);
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const themSan = createAsyncThunk('san/themSan', async (payload, { rejectWithValue }) => {
@@ -50,7 +51,7 @@ export const themSan = createAsyncThunk('san/themSan', async (payload, { rejectW
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -63,7 +64,7 @@ export const capNhatSan = createAsyncThunk('san/capNhatSan', async (payload, { r
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 
@@ -76,7 +77,7 @@ export const xoaSan = createAsyncThunk('san/xoaSan', async (payload, { rejectWit
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 

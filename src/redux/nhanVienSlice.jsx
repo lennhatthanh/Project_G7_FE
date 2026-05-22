@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import React from 'react';
-import DangNhap from '../page/NguoiDung/DangNhap';
+import { getErrorMessage } from '@/utils/errorMessage';
 import api from '@/utils/http';
 export const dangNhapNhanVien = createAsyncThunk('nhanvien/dangNhap', async (payload) => {
     const res = await api.post('/auth/dang-nhap-nhan-vien', payload);
@@ -15,7 +14,7 @@ export const themNhanVien = createAsyncThunk('nhanvien/themNhanVien', async (pay
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const xoaNhanVien = createAsyncThunk('nhanvien/xoaNhanVien', async (payload, { rejectWithValue }) => {
@@ -27,7 +26,7 @@ export const xoaNhanVien = createAsyncThunk('nhanvien/xoaNhanVien', async (paylo
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const capNhatNhanVien = createAsyncThunk('nhanvien/capNhatNhanVien', async (payload, { rejectWithValue }) => {
@@ -39,7 +38,7 @@ export const capNhatNhanVien = createAsyncThunk('nhanvien/capNhatNhanVien', asyn
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataNhanVien = createAsyncThunk('nhanvien/dataNhanVien', async () => {
@@ -50,7 +49,7 @@ export const dataNhanVien = createAsyncThunk('nhanvien/dataNhanVien', async () =
     });
     return res.data;
 });
-export const dataDatSan = createAsyncThunk('nhanvien/dataDatSan', async () => {
+export const dataDatSan = createAsyncThunk('nhanvien/dataDatSan', async (_, { rejectWithValue }) => {
     try {
         const res = await api.get('/dat-san/lich-su-dat-san-nhan-vien', {
             headers: {
@@ -59,7 +58,7 @@ export const dataDatSan = createAsyncThunk('nhanvien/dataDatSan', async () => {
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const kiemTraNhanVien = createAsyncThunk('admin/kiemTraNhanVien', async (_, { rejectWithValue }) => {
@@ -71,7 +70,7 @@ export const kiemTraNhanVien = createAsyncThunk('admin/kiemTraNhanVien', async (
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const nhanVienSlice = createSlice({

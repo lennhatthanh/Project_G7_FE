@@ -1,4 +1,5 @@
 import api from '@/utils/http';
+import { getErrorMessage } from '@/utils/errorMessage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const themDanhGia = createAsyncThunk('danh-gia/themDanhGia', async (payload, { rejectWithValue }) => {
@@ -10,7 +11,7 @@ export const themDanhGia = createAsyncThunk('danh-gia/themDanhGia', async (paylo
         });
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 export const dataDanhGia = createAsyncThunk('danh-gia/dataDanhGia', async (_, { rejectWithValue }) => {
@@ -18,7 +19,7 @@ export const dataDanhGia = createAsyncThunk('danh-gia/dataDanhGia', async (_, { 
         const res = await api.get('/danh-gia/lay-du-lieu');
         return res.data;
     } catch (error) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(getErrorMessage(error));
     }
 });
 const danhGiaSlice = createSlice({
